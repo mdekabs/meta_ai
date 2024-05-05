@@ -1,7 +1,10 @@
 from flask import Flask, jsonify, request
 from meta_ai_api import MetaAI
-
 app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return "MetaAI ready for use."
 
 class MetaAIService:
     def __init__(self):
@@ -20,4 +23,4 @@ def chat():
     return jsonify({'response': response})
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)

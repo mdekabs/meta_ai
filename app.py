@@ -1,16 +1,21 @@
 from flask import Flask, jsonify, request, make_response
 from meta_ai_api import MetaAI
 import logging
+import requests
 
 app = Flask(__name__)
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
+# Set a default timeout for all requests made by the requests library
+requests_timeout = 10  # Adjust the timeout value as needed
+requests.adapters.DEFAULT_RETRIES = 3  # Retry failed requests up to 3 times
+requests.adapters.DEFAULT_TIMEOUT = requests_timeout
+
 class MedicalAssistantService:
     def __init__(self):
-        # Set a timeout value for requests made by MetaAI
-        self.ai = MetaAI(request_timeout=10)  # Adjust the timeout value as needed
+        self.ai = MetaAI()  # No need to pass request_timeout here
 
     def generate_response(self, message):
         try:

@@ -7,13 +7,10 @@ app = Flask(__name__)
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
-@app.route('/')
-def index():
-    return "Medical Assistant AI ready for use."
-
 class MedicalAssistantService:
     def __init__(self):
-        self.ai = MetaAI()
+        # Set a timeout value for requests made by MetaAI
+        self.ai = MetaAI(request_timeout=10)  # Adjust the timeout value as needed
 
     def generate_response(self, message):
         try:
@@ -25,6 +22,10 @@ class MedicalAssistantService:
             return "An error occurred while processing your request."
 
 medical_assistant_service = MedicalAssistantService()
+
+@app.route('/')
+def index():
+    return "Medical Assistant AI ready for use."
 
 @app.route('/chat', methods=['POST'])
 def chat():
